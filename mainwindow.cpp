@@ -14,7 +14,43 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_2->setPixmap(dark);
     ui->label_3->setPixmap(dark);
     ui->label_4->setPixmap(dark);
+
+ //   ui->speedSlider->installEventFilter(this);
 }
+bool MainWindow::event(QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress )
+    {
+        QKeyEvent* keyEvent = (QKeyEvent*)event;
+        if (keyEvent->key()=='S'&&ui->speedSlider->sliderPosition()<=100)
+        {
+            ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()+1);
+        }
+        else if (keyEvent->key()=='A'&&ui->speedSlider->sliderPosition()>=0)
+        {
+            ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()-1);
+        }
+
+    }
+    return QMainWindow::event(event);
+}
+//bool MainWindow::eventFilter(QObject* watched, QEvent* event)
+//{
+//    if (event->type() == QEvent::KeyPress )
+//    {
+//        QKeyEvent* keyEvent = (QKeyEvent*)event;
+//        if (keyEvent->key()=='S'&&ui->speedSlider->sliderPosition()<=100)
+//        {
+//            ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()+1);
+//        }
+//        else if (keyEvent->key()=='A'&&ui->speedSlider->sliderPosition()>=0)
+//        {
+//            ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()-1);
+//        }
+
+//    }
+//    return QMainWindow::eventFilter(watched, event);
+//}
 
 MainWindow::~MainWindow()
 {
@@ -166,3 +202,9 @@ void MainWindow::on_pushButton_clicked()
 {
     timer->stop();
 }
+
+void MainWindow::on_speedSlider_valueChanged(int value)
+{
+    changeSwitchSpeed(value);
+}
+

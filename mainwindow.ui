@@ -17,7 +17,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>90</x>
       <y>160</y>
       <width>131</width>
       <height>161</height>
@@ -170,21 +170,11 @@
      <string>E</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>230</y>
-      <width>126</width>
-      <height>42</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="dump">
     <property name="geometry">
      <rect>
       <x>620</x>
-      <y>300</y>
+      <y>310</y>
       <width>103</width>
       <height>36</height>
      </rect>
@@ -194,45 +184,6 @@
     </property>
     <property name="shortcut">
      <string>W</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="switchSpeed">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>50</y>
-      <width>221</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>switchSpeed</string>
-    </property>
-   </widget>
-   <widget class="QSlider" name="speedSlider">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>140</y>
-      <width>221</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QProgressBar" name="speedBar">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>180</y>
-      <width>261</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="value">
-     <number>1</number>
     </property>
    </widget>
    <widget class="QLabel" name="cout">
@@ -262,6 +213,48 @@
     </property>
     <property name="shortcut">
      <string>Q</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>61</y>
+      <width>301</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="switchSpeed">
+       <property name="text">
+        <string>switchSpeed</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="speedBar">
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QSlider" name="speedSlider">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>270</y>
+      <width>299</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>

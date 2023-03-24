@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <qlabel.h>
 #include <QTimer>
+#include<QKeyEvent>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +23,8 @@ private slots:
 
     void on_checkBox_stateChanged(int arg1);
 
+    bool event(QEvent* event);
+//    bool eventFilter(QObject* watched, QEvent* event);
 
     void on_checkBox_2_stateChanged(int arg1);
     void on_checkBox_3_stateChanged(int arg1);
@@ -39,6 +42,8 @@ private slots:
     void on_speedSlider_sliderMoved(int position);
 
     void on_pushButton_clicked();
+
+    void on_speedSlider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
