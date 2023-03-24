@@ -145,8 +145,8 @@
    <widget class="QPushButton" name="shining">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>270</y>
+      <x>440</x>
+      <y>330</y>
       <width>103</width>
       <height>36</height>
      </rect>
@@ -158,8 +158,8 @@
    <widget class="QSpinBox" name="spinBox">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>220</y>
+      <x>590</x>
+      <y>230</y>
       <width>126</width>
       <height>42</height>
      </rect>
@@ -168,14 +168,66 @@
    <widget class="QPushButton" name="dump">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>280</y>
+      <x>600</x>
+      <y>330</y>
       <width>103</width>
       <height>36</height>
      </rect>
     </property>
     <property name="text">
      <string>dump</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="switchSpeed">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>50</y>
+      <width>221</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>switchSpeed</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="speedSlider">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>140</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="speedBar">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>180</y>
+      <width>261</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="cout">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>30</y>
+      <width>66</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
    </widget>
   </widget>

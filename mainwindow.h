@@ -31,9 +31,17 @@ private slots:
     void bulr();
     void on_dump_clicked();
 
+    void changeSwitchSpeed(int speed);
+
+
+    void on_speedBar_valueChanged(int value);
+
+    void on_speedSlider_sliderMoved(int position);
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer=new QTimer() ;
     int counter = 0;
+    int ShiningSpeed = 1;
 };
 #endif // MAINWINDOW_H

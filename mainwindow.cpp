@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(bulr()));
-
+    ui->speedSlider->setRange(0,100);
 
 }
 
@@ -121,7 +121,38 @@ void MainWindow::on_dump_clicked()
     int target = ui->spinBox->value();
     counter =target*2;
 
-        timer->start(500);
+        timer->start(ShiningSpeed+1);//avoid 0 case
+
+}
+
+
+
+
+void MainWindow::changeSwitchSpeed(int speed)
+{
+    QString s = ">=100";
+    if(speed<=0){
+        s = "<=0";
+    }else
+    if(speed<50){
+        s = "<50";
+    }else if(speed<100){
+        s = "<100";
+    }
+    ui->cout->setText(s);
+    ui->speedBar->setValue(speed);
+    ShiningSpeed = speed*5;
+}
+
+void MainWindow::on_speedBar_valueChanged(int value)
+{
+   changeSwitchSpeed(value);
+}
+
+
+void MainWindow::on_speedSlider_sliderMoved(int position)
+{
+    changeSwitchSpeed(position);
 
 }
 
