@@ -169,7 +169,7 @@ void MainWindow::on_checkBox_4_stateChanged(int arg1) {
 }
 
 void MainWindow::bulr() {
-  counter = counter - 1;
+  counter = 1 - counter; // counter - 1;
   if (counter <= 0) {
     timer->stop();
   } else {
@@ -202,6 +202,7 @@ void MainWindow::bulr() {
     ui->checkBox_3->setCheckState(t);
     ui->checkBox_4->setCheckState(t);
   }
+  timer->start(ShiningSpeed + 1); // avoid 0 case
 }
 
 void MainWindow::on_shining_clicked() {
