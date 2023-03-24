@@ -130,7 +130,7 @@ void MainWindow::changeBulb(QLabel *label, int arg1) {
   } else {
     label->setPixmap(dark);
   }
-  std::map<QLabel*, int> led = {
+  std::map<QLabel *, int> led = {
       {ui->label_1, 255},
       {ui->label_2, 396},
       {ui->label_3, 429},
@@ -138,12 +138,12 @@ void MainWindow::changeBulb(QLabel *label, int arg1) {
   };
   std::map<std::string, int> power = {{"on", 1}, {"off", 0}};
 
-  std::string power_index="on";
+  std::string power_index = "on";
 
-  if(arg1==0){
-      power_index = "on";
-  }else{
-      power_index = "off";
+  if (arg1 != 0) {
+    power_index = "on";
+  } else {
+    power_index = "off";
   }
 
   int ledCode = led[label];
@@ -151,7 +151,6 @@ void MainWindow::changeBulb(QLabel *label, int arg1) {
   gpio_export(ledCode);
   gpio_set_dir(ledCode, "out");
   gpio_set_value(ledCode, powerCode);
-
 }
 void MainWindow::on_checkBox_stateChanged(int arg1) {
   //    changeBulb(ui->label_1,arg1);
