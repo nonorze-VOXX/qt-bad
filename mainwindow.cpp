@@ -9,6 +9,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer,SIGNAL(timeout()),this,SLOT(bulr()));
     ui->speedSlider->setRange(0,100);
 
+    QPixmap dark = QPixmap("../micro/bulb_dark.png");
+    ui->label_1->setPixmap(dark);
+    ui->label_2->setPixmap(dark);
+    ui->label_3->setPixmap(dark);
+    ui->label_4->setPixmap(dark);
 }
 
 MainWindow::~MainWindow()
@@ -156,3 +161,8 @@ void MainWindow::on_speedSlider_sliderMoved(int position)
 
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    timer->stop();
+}

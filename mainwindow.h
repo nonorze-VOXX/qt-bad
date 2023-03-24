@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <qlabel.h>
-#include<QTimer>
+#include <QTimer>
 
 
 QT_BEGIN_NAMESPACE
@@ -38,10 +38,13 @@ private slots:
 
     void on_speedSlider_sliderMoved(int position);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer=new QTimer() ;
     int counter = 0;
     int ShiningSpeed = 1;
+
 };
 #endif // MAINWINDOW_H

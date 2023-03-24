@@ -83,6 +83,9 @@
     <property name="text">
      <string>light1</string>
     </property>
+    <property name="shortcut">
+     <string>1</string>
+    </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_2">
     <property name="geometry">
@@ -95,6 +98,9 @@
     </property>
     <property name="text">
      <string>light2</string>
+    </property>
+    <property name="shortcut">
+     <string>2</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_3">
@@ -109,6 +115,9 @@
     <property name="text">
      <string>light3</string>
     </property>
+    <property name="shortcut">
+     <string>3</string>
+    </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_4">
     <property name="geometry">
@@ -121,6 +130,9 @@
     </property>
     <property name="text">
      <string>light4</string>
+    </property>
+    <property name="shortcut">
+     <string>4</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_1">
@@ -145,14 +157,17 @@
    <widget class="QPushButton" name="shining">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>330</y>
+      <x>470</x>
+      <y>470</y>
       <width>103</width>
       <height>36</height>
      </rect>
     </property>
     <property name="text">
      <string>shining</string>
+    </property>
+    <property name="shortcut">
+     <string>E</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="spinBox">
@@ -168,14 +183,17 @@
    <widget class="QPushButton" name="dump">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>330</y>
+      <x>620</x>
+      <y>300</y>
       <width>103</width>
       <height>36</height>
      </rect>
     </property>
     <property name="text">
-     <string>dump</string>
+     <string>switch on</string>
+    </property>
+    <property name="shortcut">
+     <string>W</string>
     </property>
    </widget>
    <widget class="QLabel" name="switchSpeed">
@@ -214,7 +232,7 @@
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>1</number>
     </property>
    </widget>
    <widget class="QLabel" name="cout">
@@ -228,6 +246,22 @@
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>300</y>
+      <width>103</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>switching off</string>
+    </property>
+    <property name="shortcut">
+     <string>Q</string>
     </property>
    </widget>
   </widget>
