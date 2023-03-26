@@ -196,7 +196,6 @@ void MainWindow::on_dump_clicked() {
 int getRandInt () {
     srand(time(NULL));
     int x = rand() % 4 + 1;
-    printf("%d\n", x);
     return x;
 }
 
