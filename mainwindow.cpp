@@ -5,9 +5,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(bulr()));
+  connect(gameTimer, SIGNAL(timeout()), this, SLOT(bulbShine()));
   ui->speedSlider->setRange(0, 100);
 
-  QPixmap dark = QPixmap("../micro/bulb_dark.png");
+  QPixmap dark = QPixmap("../qt-bad/bulb_dark.png");
   ui->label_1->setPixmap(dark);
   ui->label_2->setPixmap(dark);
   ui->label_3->setPixmap(dark);
@@ -27,23 +28,6 @@ bool MainWindow::event(QEvent *event) {
   }
   return QMainWindow::event(event);
 }
-// bool MainWindow::eventFilter(QObject* watched, QEvent* event)
-//{
-//     if (event->type() == QEvent::KeyPress )
-//     {
-//         QKeyEvent* keyEvent = (QKeyEvent*)event;
-//         if (keyEvent->key()=='S'&&ui->speedSlider->sliderPosition()<=100)
-//         {
-//             ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()+1);
-//         }
-//         else if (keyEvent->key()=='A'&&ui->speedSlider->sliderPosition()>=0)
-//         {
-//             ui->speedSlider->setSliderPosition(ui->speedSlider->sliderPosition()-1);
-//         }
-
-//    }
-//    return QMainWindow::eventFilter(watched, event);
-//}
 
 MainWindow::~MainWindow() { delete ui; }
 
@@ -119,13 +103,13 @@ int gpio_set_value(unsigned int gpio, int value) {
   close(fd);
   return 0;
 }
+
 void MainWindow::changeBulb(QLabel *label, int arg1) {
 
-  QPixmap pixmap = QPixmap("../micro/bulb_light.png");
+  QPixmap pixmap = QPixmap("../qt-bad/bulb_light.png");
 
-  QPixmap dark = QPixmap("../micro/bulb_dark.png");
+  QPixmap dark = QPixmap("../qt-bad/bulb_dark.png");
   if (arg1 != 0) {
-    // ui->label_1->setPixmap(pixmap);
     label->setPixmap(pixmap);
   } else {
     label->setPixmap(dark);
@@ -148,33 +132,18 @@ void MainWindow::changeBulb(QLabel *label, int arg1) {
 
   int ledCode = led[label];
   int powerCode = power[power_index];
-  gpio_export(ledCode);
-  gpio_set_dir(ledCode, "out");
-  gpio_set_value(ledCode, powerCode);
-}
-void MainWindow::on_checkBox_stateChanged(int arg1) {
-  //    changeBulb(ui->label_1,arg1);
-}
-
-void MainWindow::on_checkBox_2_stateChanged(int arg1) {
-  // changeBulb(ui->label_2,arg1);
-}
-
-void MainWindow::on_checkBox_3_stateChanged(int arg1) {
-  // changeBulb(ui->label_3,arg1);
-}
-
-void MainWindow::on_checkBox_4_stateChanged(int arg1) {
-  // changeBulb(ui->label_4,arg1);
+//  gpio_export(ledCode);
+//  gpio_set_dir(ledCode, "out");
+//  gpio_set_value(ledCode, powerCode);
 }
 
 void MainWindow::bulr() {
   counter = 1 - counter; // counter - 1;
-  if (counter <= 0) {
-    timer->stop();
-  } else {
-    // timer->start(1000);
-  }
+//  if (counter <= 0) {
+//    timer->stop();
+//  } else {
+//    // timer->start(1000);
+//  }
   Qt::CheckState t = Qt::CheckState(1);
   Qt::CheckState f = Qt::CheckState(0);
 
@@ -218,22 +187,71 @@ void MainWindow::on_shining_clicked() {
 
 void MainWindow::on_dump_clicked() {
 
-  //    changeBulb(ui->label_1,1);
-  //    changeBulb(ui->label_2,1);
-  //    changeBulb(ui->label_3,0);
-  //    changeBulb(ui->label_4,0);
-  //    Qt::CheckState t = Qt::CheckState(1);
-  //    Qt::CheckState f = Qt::CheckState(0);
-
-  //    ui->checkBox->setCheckState(t);
-  //    ui->checkBox_2->setCheckState(t);
-  //    ui->checkBox_3->setCheckState(f);
-  //    ui->checkBox_4->setCheckState(f);
-
   int target = ui->spinBox->value();
   counter = target * 2;
 
   timer->start(ShiningSpeed + 1); // avoid 0 case
+}
+
+int getRandInt () {
+    srand(time(NULL));
+    int x = rand() % 4 + 1;
+    printf("%d\n", x);
+    return x;
+}
+
+void MainWindow::bulbShine () {
+    Qt::CheckState t = Qt::CheckState(1);
+    Qt::CheckState f = Qt::CheckState(0);
+    int num = getRandInt();
+    switch (num) {
+    case 1:
+        changeBulb(ui->label_1, 1);
+        changeBulb(ui->label_2, 0);
+        changeBulb(ui->label_3, 0);
+        changeBulb(ui->label_4, 0);
+        ui->checkBox->setCheckState(t);
+        ui->checkBox_2->setCheckState(f);
+        ui->checkBox_3->setCheckState(f);
+        ui->checkBox_4->setCheckState(f);
+        break;
+    case 2:
+        changeBulb(ui->label_1, 0);
+        changeBulb(ui->label_2, 1);
+        changeBulb(ui->label_3, 0);
+        changeBulb(ui->label_4, 0);
+        ui->checkBox->setCheckState(f);
+        ui->checkBox_2->setCheckState(t);
+        ui->checkBox_3->setCheckState(f);
+        ui->checkBox_4->setCheckState(f);
+        break;
+    case 3:
+        changeBulb(ui->label_1, 0);
+        changeBulb(ui->label_2, 0);
+        changeBulb(ui->label_3, 1);
+        changeBulb(ui->label_4, 0);
+        ui->checkBox->setCheckState(f);
+        ui->checkBox_2->setCheckState(f);
+        ui->checkBox_3->setCheckState(t);
+        ui->checkBox_4->setCheckState(f);
+        break;
+    case 4:
+        changeBulb(ui->label_1, 0);
+        changeBulb(ui->label_2, 0);
+        changeBulb(ui->label_3, 0);
+        changeBulb(ui->label_4, 1);
+        ui->checkBox->setCheckState(f);
+        ui->checkBox_2->setCheckState(f);
+        ui->checkBox_3->setCheckState(f);
+        ui->checkBox_4->setCheckState(t);
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::on_start_clicked() {
+    gameTimer->start(1000);
 }
 
 void MainWindow::changeSwitchSpeed(int speed) {
@@ -252,10 +270,6 @@ void MainWindow::changeSwitchSpeed(int speed) {
 
 void MainWindow::on_speedBar_valueChanged(int value) {
   changeSwitchSpeed(value);
-}
-
-void MainWindow::on_speedSlider_sliderMoved(int position) {
-  changeSwitchSpeed(position);
 }
 
 void MainWindow::on_pushButton_clicked() { timer->stop(); }
