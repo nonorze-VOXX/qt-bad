@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
     console.log("1")
     // data = JSON.parse(data)
     // res.end("")
-    res.sendFile("/home/nvidia/code/lab4/lab4.html");
+    res.sendFile("/home/nvidia/code/qt-bad/lab4.html");
     // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html");
 
 
@@ -43,13 +43,13 @@ app.post('/led', function (req, res) {
         data['led3'] = fields['led3']
         data['led4'] = fields['led4']
         for (let i = 0; i < 4; i++) {
-            if (data['led' + i] == 'on') {
-                exec("./onoff.out LED" + i + " " + onoff)
+            if (data['led' + (i + 1)] == 'on') {
+                exec("./onoff.out LED" + (i + 1) + " " + onoff)
                 console.log(i + onoff)
-                poutput += "./onoff.out LED" + i + " " + onoff + "<br>";
+                poutput += "./onoff.out LED" + (i + 1) + " " + onoff + "<br>";
             }
         }
-        res.sendFile("/home/nvidia/code/lab4/lab4.html");
+        res.sendFile("/home/nvidia/code/qt-bad/lab4.html");
         // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html")
     })
 });
@@ -69,10 +69,10 @@ function myAlert() {
     for (let i = 0; i < 4; i++) {
         if (ledstate[i] == 1) {
             console.log(i + 'on')
-            exec("./onoff.out LED" + i + " on");
+            exec("./onoff.out LED" + (i + 1) + " on");
         } else {
             console.log(i + 'off')
-            exec("./onoff.out LED" + i + " off");
+            exec("./onoff.out LED" + (i + 1) + " off");
         }
         ledstate[i] = 1 - ledstate[i];
     }
@@ -88,7 +88,7 @@ app.post('/times', function (req, res) {
         ledstate = initLedstate
         timeoutID = setTimeout(myAlert, 1000);
 
-        res.sendFile("/home/nvidia/code/lab4/lab4.html");
+        res.sendFile("/home/nvidia/code/qt-bad/lab4.html");
         // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html")
     })
 });
