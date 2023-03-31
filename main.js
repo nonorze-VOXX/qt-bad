@@ -51,6 +51,36 @@ app.post('/led', function (req, res) {
         res.end("i have " + JSON.stringify(poutput))
     })
 });
+app.post('/times', function (req, res) {
+    const form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        let initLedstate = [1, 1, 0, 0];
+        let ledstate = [1, 1, 0, 0];
+        let counter = 0;
+        let times = 0;
+
+        function myAlert() {
+            counter += 1;
+            if (counter > times) {
+                setTimeout();
+            }
+            for (let i = 0; i < 4; i++) {
+                if (ledstate == 1) {
+                    exec("./onoff.out LED" + i + " on");
+                } else {
+                    exec("./onoff.out LED" + i + " off");
+                }
+                ledstate[i] = 1 - ledstate[i];
+            }
+        }
+        if (err) {
+        }
+        times = fields['times'];
+        counter = 0;
+        ledstate = initLedstate
+        var timeoutID = setTimeout(myAlert, 1000);
+    })
+});
 app.listen(8000)
 // function writeFile() {
 //     fs.writeFile('TestFile.txt', function (err, data) {
