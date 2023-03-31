@@ -29,26 +29,28 @@ public:
 
 private slots:
 
-  void on_checkBox_stateChanged(int arg1);
-
   bool event(QEvent *event);
   //    bool eventFilter(QObject* watched, QEvent* event);
 
-  void on_checkBox_2_stateChanged(int arg1);
-  void on_checkBox_3_stateChanged(int arg1);
-  void on_checkBox_4_stateChanged(int arg1);
-
   void on_shining_clicked();
   void bulr();
+  void onMove();
   void on_dump_clicked();
 
   void changeSwitchSpeed(int speed);
 
   void on_speedBar_valueChanged(int value);
 
-  void on_speedSlider_sliderMoved(int position);
-
   void on_pushButton_clicked();
+
+  void on_start_clicked();
+
+  void bulbShine();
+
+  void on_ans_1_clicked();
+  void on_ans_2_clicked();
+  void on_ans_3_clicked();
+  void on_ans_4_clicked();
 
   void on_speedSlider_valueChanged(int value);
   void changeBulb(QLabel *label, int arg1);
@@ -56,7 +58,10 @@ private slots:
 private:
   Ui::MainWindow *ui;
   QTimer *timer = new QTimer();
+  QTimer *gameTimer = new QTimer();
+  QTimer *stateTimer = new QTimer();
   int counter = 0;
   int ShiningSpeed = 1;
+  int state; // 0->init  1->run  2->end
 };
 #endif // MAINWINDOW_H
