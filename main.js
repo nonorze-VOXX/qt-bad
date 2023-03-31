@@ -16,8 +16,8 @@ app.get('/', function (req, res) {
     console.log("1")
     // data = JSON.parse(data)
     // res.end("")
-    // res.sendFile("/home/nvidia/code/lab4/lab4.html");
-    res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html");
+    res.sendFile("/home/nvidia/code/lab4/lab4.html");
+    // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html");
 
 
 });
@@ -45,40 +45,51 @@ app.post('/led', function (req, res) {
         for (let i = 0; i < 4; i++) {
             if (data['led' + i] == 'on') {
                 exec("./onoff.out LED" + i + " " + onoff)
+                console.log(i + onoff)
                 poutput += "./onoff.out LED" + i + " " + onoff + "<br>";
             }
         }
-        res.end("i have " + JSON.stringify(poutput))
+        res.sendFile("/home/nvidia/code/lab4/lab4.html");
+        // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html")
     })
 });
+
+let initLedstate = [1, 1, 0, 0];
+let ledstate = [1, 1, 0, 0];
+let counter = 0;
+let times = 0;
+let timeoutID = '';
+
+function myAlert() {
+    counter += 1;
+    if (counter > times) {
+        return 0;
+    }
+    console.log(ledstate)
+    for (let i = 0; i < 4; i++) {
+        if (ledstate[i] == 1) {
+            console.log(i + 'on')
+            exec("./onoff.out LED" + i + " on");
+        } else {
+            console.log(i + 'off')
+            exec("./onoff.out LED" + i + " off");
+        }
+        ledstate[i] = 1 - ledstate[i];
+    }
+    setTimeout(myAlert, 1000);
+}
 app.post('/times', function (req, res) {
     const form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
-        let initLedstate = [1, 1, 0, 0];
-        let ledstate = [1, 1, 0, 0];
-        let counter = 0;
-        let times = 0;
-
-        function myAlert() {
-            counter += 1;
-            if (counter > times) {
-                setTimeout();
-            }
-            for (let i = 0; i < 4; i++) {
-                if (ledstate == 1) {
-                    exec("./onoff.out LED" + i + " on");
-                } else {
-                    exec("./onoff.out LED" + i + " off");
-                }
-                ledstate[i] = 1 - ledstate[i];
-            }
-        }
         if (err) {
         }
-        times = fields['times'];
+        times = fields['times'] * 2;
         counter = 0;
         ledstate = initLedstate
-        var timeoutID = setTimeout(myAlert, 1000);
+        timeoutID = setTimeout(myAlert, 1000);
+
+        res.sendFile("/home/nvidia/code/lab4/lab4.html");
+        // res.sendFile("/home/lag/code/micro-computer/lab4/lab4.html")
     })
 });
 app.listen(8000)
