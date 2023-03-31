@@ -44,7 +44,7 @@ app.post('/led', function (req, res) {
         data['led4'] = fields['led4']
         for (let i = 0; i < 4; i++) {
             if (data['led' + i] == 'on') {
-                // exec("./onoff.out LED" + i + " " + fields['led' + i])
+                exec("./onoff.out LED" + i + " " + onoff)
                 poutput += "./onoff.out LED" + i + " " + onoff + "<br>";
             }
         }
