@@ -18,14 +18,10 @@ def init():
     GPIO.setup(SPIMISO, GPIO.IN)
     GPIO.setup(SPICLK, GPIO.OUT)
     GPIO.setup(SPICS, GPIO.OUT)
-
-
-'''
-GPIO.setup():該腳位需要作為輸入還是輸出
-GPIO.output():設定輸出電位高低
-GPIO.input():在某個時間點檢查輸入值
-GPIO.cleanup():清除正在使用的腳位編號系統
-'''
+    GPIO.setup(led1_code, GPIO.OUT)
+    GPIO.setup(led2_code, GPIO.OUT)
+    GPIO.output(led1_code, 0)
+    GPIO.output(led2_code, 0)
 
 
 def readadc(adcnum, clockpin, mosipin, misopin, cspin):
@@ -41,7 +37,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
     commandout <<= 3  # we only need to send 5 bits here
     for i in range(5):
         if (commandout & 0x80):
-            GPIO. output(mosipin, True)
+            GPIO.output(mosipin, True)
         else:
             GPIO.output(mosipin, False)
         commandout <<= 1
@@ -51,15 +47,15 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
     adcout = 0
     # read in one empty bit, one null bit and 10 ADC bits
     for i in range(12):
-        GPIO. output(clockpin, True)
-        GPIO. output(clockpin, False)
+        GPIO.output(clockpin, True)
+        GPIO.output(clockpin, False)
         adcout <<= 1
         if (GPIO.input(misopin)):
             adcout |= 0x1
 
     GPIO.output(cspin, True)
 
-    adcout >>= 1  # first bit is ‘null’ so drop it
+    adcout >>= 1
     return adcout
 
 
@@ -69,6 +65,11 @@ SPIMOSI = 10
 SPICS = 8
 
 output_pin = 7
+
+led1_thresh = 100
+led2_thresh = 300
+led1_code = 4
+led2_code = 17
 
 # photoresistor connected to adc #0
 
@@ -81,6 +82,19 @@ def main():
     init()
     while True:
         adc_value = readadc(photo_ch, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        if (adc_value > led1_thresh):
+            GPIO.output(led1_code, 1)
+            print("led1 on")
+        else:
+            GPIO.output(led1_code, 0)
+            print("led1 off")
+        if (adc_value > led2_thresh):
+            GPIO.output(led2_code, 1)
+            print("led2 on")
+        else:
+            GPIO.output(led2_code, 0)
+            print("led2 off")
+
         print(adc_value)
         time.sleep(1)
 
