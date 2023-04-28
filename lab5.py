@@ -96,6 +96,7 @@ def main():
             print("led2 off")
 
         print(adc_value)
+        return 
         time.sleep(1)
 
 

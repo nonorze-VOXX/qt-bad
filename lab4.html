@@ -1,0 +1,89 @@
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+    <h1>
+        NODE JS
+    </h1>
+    <br>
+    <h2>
+        LED
+    </h2>
+    <div id="ledPanel">
+        <h2>
+        led control panel
+        </h2>
+        <form action="/led" method="POST" id ="led">
+            <input type="checkbox" name="led1">
+            <label for="led1">led1</label>
+            <input type="checkbox" name="led2">
+            <label for="led2">led2</label>
+            <br>
+            <input type="checkbox" name="OFF" value="off">OFF<br>
+            <input type="checkbox" name="ON" value="on">ON<br>
+            <input type="submit" value="Submit">
+        </form>
+    <div>
+        <h2>
+            LED SWITCH FRequncy
+        </h2>
+        <form action="/times" method="POST">
+            <input type="text" name="times">
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+
+    </div>
+    <div id="adc" style="display:none">
+        value
+    </div>
+    <div>
+        <form action="/">
+            <input type="radio" name="detect" value="on" id="delect1">detect<br>
+            <input type="radio" name="detect" value="off" id ="delect2">undetect<br>
+            <input type="submit" onclick="detectEvent" value="Submit">
+        </form>
+    </div>
+</body>
+<script>
+    let status=false
+    function delectEvent(event){
+        let adc=document.getElementById("adc") 
+        let panel=document.getElementById("ledPanel")
+        if(event.srcElement.value=="on"){
+            adc.style.display="block"
+            panel.style.display="none"
+            status=true
+        }
+        else{
+            adc.style.display="none"
+            panel.style.display="block"
+            status=false
+        }
+    }
+    function getSense(event){
+        // console.log(status)
+        if(status==true){
+            let xhr=new XMLHttpRequest()
+            xhr.open("GET","./lightSense")
+            xhr.onload=(event)=>{
+                console.log(event.target.response)
+            }
+            xhr.send()
+
+        }
+
+    }
+    let delect1=document.getElementById("delect1")
+    let delect2=document.getElementById("delect2")
+    delect1.addEventListener("change",delectEvent)
+    delect2.addEventListener("change",delectEvent)
+    let update = setInterval(getSense,500)
+
+</script>
+</html>
