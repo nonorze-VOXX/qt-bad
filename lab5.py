@@ -66,8 +66,8 @@ SPICS = 8
 
 output_pin = 7
 
-led1_thresh = 100
-led2_thresh = 300
+led1_thresh = 300
+led2_thresh = 600
 led1_code = 4
 led2_code = 17
 
@@ -84,20 +84,20 @@ def main():
         adc_value = readadc(photo_ch, SPICLK, SPIMOSI, SPIMISO, SPICS)
         if (adc_value > led1_thresh):
             GPIO.output(led1_code, 1)
-            print("led1 on")
+            # print("led1 on")
         else:
             GPIO.output(led1_code, 0)
-            print("led1 off")
+            #print("led1 off")
         if (adc_value > led2_thresh):
             GPIO.output(led2_code, 1)
-            print("led2 on")
+            # print("led2 on")
         else:
             GPIO.output(led2_code, 0)
-            print("led2 off")
+            # print("led2 off")
 
         print(adc_value)
         return 
-        time.sleep(1)
+        #time.sleep(1)
 
 
 if __name__ == '__main__':

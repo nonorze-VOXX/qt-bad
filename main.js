@@ -8,8 +8,8 @@ const formidable = require('formidable')
 const fs = require('fs')
 const JSON = require('JSON')
 
-// const path="/home/nvidia/code/qt-bad/"
-const path="/home/green-rider/code/university/qt-bad/"
+const path="/home/nvidia/code/qt-bad/"
+//const path="/home/green-rider/code/university/qt-bad/"
 let app = express();
 app.get('/', function (req, res) {
 
@@ -44,7 +44,7 @@ app.post('/led', function (req, res) {
         data['led2'] = fields['led2']
         data['led3'] = fields['led3']
         data['led4'] = fields['led4']
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 2; i++) {
             if (data['led' + (i + 1)] == 'on') {
                 exec("./onoff.out LED" + (i + 1) + " " + onoff)
                 console.log(i + onoff)
@@ -56,8 +56,8 @@ app.post('/led', function (req, res) {
     })
 });
 
-let initLedstate = [1, 1, 0, 0];
-let ledstate = [1, 1, 0, 0];
+let initLedstate = [1, 0, 0, 0];
+let ledstate = [1,0 , 0, 0];
 let counter = 0;
 let times = 0;
 let timeoutID = '';
@@ -68,7 +68,7 @@ function myAlert() {
         return 0;
     }
     console.log(ledstate)
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
         if (ledstate[i] == 1) {
             console.log(i + 'on')
             exec("./onoff.out LED" + (i + 1) + " on");
@@ -98,14 +98,13 @@ app.get('/lightSense', function (req, res) {
     var exec = require('child_process').exec;
     // function execute(command, callback){
     var output ="";
-    // exec("python lab5.py", function(error, stdout, stderr){ 
-    //     console.log(stdout);
-    //     output = stdout;
-    // });
-    // };
-    // console.log("13")
-    // res.end(output)
-    res.end("123")
+    exec("python lab5.py", function(error, stdout, stderr){ 
+        console.log(stdout);
+        output = stdout;
+	res.end(output)
+    });
+    console.log("light Sense:",output)
+    //res.end("123")
 });
 app.listen(8000)
 // function writeFile() {
