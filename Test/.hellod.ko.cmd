@@ -1,0 +1,1 @@
+cmd_/home/nvidia/code/qt-bad/Test/hellod.ko := ld -EL -r  -T ./scripts/module-common.lds -T ./arch/arm64/kernel/module.lds --build-id  -o /home/nvidia/code/qt-bad/Test/hellod.ko /home/nvidia/code/qt-bad/Test/hellod.o /home/nvidia/code/qt-bad/Test/hellod.mod.o ;  true
