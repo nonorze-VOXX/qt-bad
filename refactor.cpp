@@ -106,36 +106,84 @@ int gpio_set_value(unsigned int gpio, int value) {
   return 0;
 }
 
-int main(int argc, char *argv[]) {
-  std::map<std::string, int> led = {
-      {"LED1", 255},
-      {"LED2", 396},
-      {"LED3", 429},
-      {"LED4", 398},
-  };
-  std::map<std::string, int> power = {{"on", 1}, {"off", 0}};
+// int main(int argc, char *argv[]) {
+//   std::map<std::string, int> led = {
+//       {"LED1", 255},
+//       {"LED2", 396},
+//       {"LED3", 429},
+//       {"LED4", 398},
+//   };
+//   std::map<std::string, int> power = {{"on", 1}, {"off", 0}};
 
-if(argc==3){
-    int gpio  =0;
-    int value = 0;
-    if(sizeof(argv[1])>1){
-        gpio = led[argv[1]];
-    }else{
-        gpio = atoi(argv[1]);
+// if(argc==3){
+//     int gpio  =0;
+//     int value = 0;
+//     if(sizeof(argv[1])>1){
+//         gpio = led[argv[1]];
+//     }else{
+//         gpio = atoi(argv[1]);
+//     }
+//     if(sizeof(argv[2])>1){
+//         value = power[argv[2]];
+//     }else{
+//         value = atoi(argv[2]);
+//     }
+//     std::cout<<gpio<<std::endl;
+//     std::cout<<value<<std::endl;
+//     gpio_set_value(gpio, value);
+// }else{
+//     std::cout<<"arg num error"<<std::endl;
+// }
+
+
+
+//   return 0;
+// }
+pthread_mutex_t mutex;
+int led[4]= {0,0,0,0};
+
+void* child(void* data){
+    pthread_mutex_lock(&mutex);
+    
+    printf("status:");
+    for(int i = 0;i<4;i++){
+        printf("%d",led[i]);
     }
-    if(sizeof(argv[2])>1){
-        value = power[argv[2]];
-    }else{
-        value = atoi(argv[2]);
+    printf("\n");
+    for(int i = 0;i<4;i++){
+        printf("GPIO:%d  status:%d\n",i,led[i]);
+        int map[4] = { 255, 396, 429, 398};
+        gpio_set_value(map[i], led[i]);
+        led[i] = 1-led[i];
     }
-    std::cout<<gpio<<std::endl;
-    std::cout<<value<<std::endl;
-    gpio_set_value(gpio, value);
-}else{
-    std::cout<<"arg num error"<<std::endl;
+    pthread_mutex_unlock(&mutex);
+
+    pthread_exit(NULL);
+
 }
 
+int main(int argc, char *argv[]) {
 
+    if(argc == 3){
+        char* s = argv[1];
+        for(int i = 0;i<4;i++){
+            if(s[i]=='0'){
+                led[i]=0;
+            }else{
+                led[i]=1;
+            }
+        }
+        int times = atoi(argv[2]);
+        for (int i = 0 ;i<times;i++){
+            pthread_t t;
+            pthread_create(&t, NULL, child, NULL);
+            pthread_join(t, NULL);
+        }
+        printf("%s\n","parent");
+    }else{
+        printf("amogus\n");
+    }
+    
+    return 0;
 
-  return 0;
 }
