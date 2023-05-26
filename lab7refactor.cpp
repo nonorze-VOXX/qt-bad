@@ -8,8 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "unistd.h"
 
 char  GPIOPath[] = "/sys/class/gpio/\0";
+int map[4] = { 429, 398, 396 ,466};
 // char  GPIOPath[] = "./";
 
 
@@ -61,10 +63,11 @@ int gpio_set_dir(unsigned int gpio, std::string dirStatus) {
     char setDirExportPath[1024] ="";
     strcpy(setDirExportPath, GPIOPath);
     char str[1024] = "";
-    snprintf(str, sizeof(str), "%d/direction", gpio);
+    snprintf(str, sizeof(str), "gpio%d/direction", gpio);
     strcat(setDirExportPath,str);
     
     strcpy(buf, setDirExportPath);
+    // printf("%s\n",setDirExportPath);
     
   fd = open(buf, O_WRONLY);
   if (fd < 0) {
@@ -152,10 +155,10 @@ void* child(void* data){
     printf("\n");
     for(int i = 0;i<4;i++){
         printf("GPIO:%d  status:%d\n",i,led[i]);
-        int map[4] = { 255, 396, 429, 398};
         gpio_set_value(map[i], led[i]);
         led[i] = 1-led[i];
     }
+    sleep(1);
     pthread_mutex_unlock(&mutex);
 
     pthread_exit(NULL);
@@ -164,10 +167,11 @@ void* child(void* data){
 
 int main(int argc, char *argv[]) {
 
-        int map[4] = { 255, 396, 429, 398};
+        // int map[4] = { 255, 396, 429, 398};
 
       for(int i = 0; i<3;i++){
         gpio_export(map[i]);
+        gpio_set_dir(map[i], "out");
       }
     if(argc == 3){
         char* s = argv[1];
