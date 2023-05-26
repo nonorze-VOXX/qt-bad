@@ -9,6 +9,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "unistd.h"
+#include <semaphore.h>
 
 char  GPIOPath[] = "/sys/class/gpio/\0";
 int map[4] = { 429, 398, 396 ,466};
@@ -142,8 +143,30 @@ int gpio_set_value(unsigned int gpio, int value) {
 
 //   return 0;
 // }
+sem_t sem;
 pthread_mutex_t mutex;
+int sem_times=0;
+
 int led[4]= {0,0,0,0};
+
+void* childSem(void* data){
+      sem_wait(&sem);
+      printf("status:");
+      for(int i = 0;i<4;i++){
+          printf("%d",led[i]);
+      }
+      printf("\n");
+      for(int i = 0;i<4;i++){
+          printf("GPIO:%d  status:%d\n",i,led[i]);
+          gpio_set_value(map[i], led[i]);
+          led[i] = 1-led[i];
+      }
+      sleep(1);
+      sem_post(&sem);
+
+    pthread_exit(NULL);
+}
+
 
 void* child(void* data){
     pthread_mutex_lock(&mutex);
@@ -166,14 +189,13 @@ void* child(void* data){
 }
 
 int main(int argc, char *argv[]) {
-
-        // int map[4] = { 255, 396, 429, 398};
-
+    sem_init(&sem, 0, 0);
       for(int i = 0; i<3;i++){
         gpio_export(map[i]);
         gpio_set_dir(map[i], "out");
       }
-    if(argc == 3){
+    if(argc == 4){
+      if(argv[3]==0){
         char* s = argv[1];
         for(int i = 0;i<4;i++){
             if(s[i]=='0'){
@@ -188,7 +210,24 @@ int main(int argc, char *argv[]) {
             pthread_create(&t, NULL, child, NULL);
             pthread_join(t, NULL);
         }
-        printf("%s\n","parent");
+      }else{
+        //sem
+        char* s = argv[1];
+        for(int i = 0;i<4;i++){
+            if(s[i]=='0'){
+                led[i]=0;
+            }else{
+                led[i]=1;
+            }
+        }
+        int times = atoi(argv[2]);
+        for (int i = 0 ;i<times;i++){
+            pthread_t t;
+            pthread_create(&t, NULL, child, NULL);
+            pthread_join(t, NULL);
+        }
+          sem_post(&sem);
+      }
     }else{
         printf("amogus\n");
     }
