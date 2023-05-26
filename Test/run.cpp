@@ -23,13 +23,24 @@ int main(int argc,char *argv[])
         //read
         char buf[1024];
         int gpio=ledCode;
-        snprintf(buf, sizeof(buf), "%d", gpio);
-        FILE *fp = fopen("/dev/lab6-2", "w+");
+        // snprintf(buf, sizeof(buf), "%d", gpio);
+        // FILE *fp = fopen("/dev/lab6-2", "w+");
+        // if (fp == NULL) {
+        //     printf("can't open device\n");
+        //     return 0;
+        // }
+        // fwrite(buf, sizeof(buf), 1, fp);
+        // fread(buf, 1, 1, fp);
+        // printf("%d %c\n",gpio,buf[0]);
+        // fclose(fp);
+        char buf1[64];
+        snprintf(buf1, sizeof(buf1),"/sys/class/gpio/gpio%d/value", gpio);
+        FILE *fp = fopen(buf1, "w+");
         if (fp == NULL) {
             printf("can't open device\n");
             return 0;
         }
-        fwrite(buf, sizeof(buf), 1, fp);
+        // fwrite(buf, sizeof(buf), 1, fp);
         fread(buf, 1, 1, fp);
         printf("%d %c\n",gpio,buf[0]);
         fclose(fp);

@@ -124,7 +124,7 @@ int gpio_read_value(unsigned int gpio) {
   printk("path:%s\n",buf);
   old_fs=get_fs();
   set_fs(get_ds());
-  fd = filp_open(buf, O_RDONLY,0);
+  fd = filp_open(buf, O_RDWR,0);
   vfs_write(fd,"1\0", 2,&pos);
   pos = 0;
   vfs_read(fd,buf1, strlen(buf1),&pos);
