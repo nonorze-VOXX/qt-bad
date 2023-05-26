@@ -9,8 +9,8 @@
 #include <string.h>
 #include <unistd.h>
 
-// char  GPIOPath[] = "/sys/class/gpio/\0";
-char  GPIOPath[] = "./";
+char  GPIOPath[] = "/sys/class/gpio/\0";
+// char  GPIOPath[] = "./";
 
 
 int gpio_export(unsigned int gpio){
@@ -164,6 +164,11 @@ void* child(void* data){
 
 int main(int argc, char *argv[]) {
 
+        int map[4] = { 255, 396, 429, 398};
+
+      for(int i = 0; i<3;i++){
+        gpio_export(map[i]);
+      }
     if(argc == 3){
         char* s = argv[1];
         for(int i = 0;i<4;i++){
