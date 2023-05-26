@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <iostream>
+#include <vector>
 #include <iterator>
 #include <map>
 #include <stdio.h>
@@ -205,10 +206,16 @@ int main(int argc, char *argv[]) {
             }
         }
         int times = atoi(argv[2]);
+        std::vector <pthread_t>tarr;
         for (int i = 0 ;i<times;i++){
             pthread_t t;
             pthread_create(&t, NULL, child, NULL);
-            pthread_join(t, NULL);
+            
+            tarr.push_back(t);
+        }
+        
+        for (int i = 0 ;i<times;i++){
+            pthread_join(tarr[i], NULL);
         }
       }else{
         //sem
@@ -221,12 +228,16 @@ int main(int argc, char *argv[]) {
             }
         }
         int times = atoi(argv[2]);
+        std::vector <pthread_t>tarr;
         for (int i = 0 ;i<times;i++){
             pthread_t t;
             pthread_create(&t, NULL, child, NULL);
-            pthread_join(t, NULL);
+            tarr.push_back(t);
         }
           sem_post(&sem);
+        for (int i = 0 ;i<times;i++){
+            pthread_join(tarr[i], NULL);
+        }
       }
     }else{
         printf("amogus\n");
