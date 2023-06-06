@@ -17,6 +17,7 @@
 int map[4] = { 429, 398, 396 ,466};
 int gpio_state[4] = {0,0,0,0};
 char  GPIOPath[] = "/home/green-rider/code/university/qt-bad/final/\0";
+int score = 0;
 int gpio_set_value(unsigned int gpio, int value) {
     int fd;
     char buf[64];
@@ -68,7 +69,9 @@ MainWindow::MainWindow(QWidget *parent)
     for (int var = 0; var < 4; ++var) {
         gpio_set_value(map[var],1);
     }
-    timer->start(2000);
+    ui->label->setText(QString("score"));
+
+    timer->start(5000);
 }
 
 MainWindow::~MainWindow()
@@ -76,38 +79,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_button1_toggled(bool checked)
-{
-    if(checked&&gpio_state[0]){
-        QTEChange();
+void MainWindow::buttonClick(int b){
+    if(gpio_state[b]){
+        //QTEChange();
+        score+=1;
+    }else{
+        score=0;
     }
+    QString s = QStringLiteral("%1. ").arg(score);
+    ui->label->setText(s);
 }
 
-
-void MainWindow::on_button2_toggled(bool checked)
+void MainWindow::on_button1_pressed()
 {
-    if(checked&&gpio_state[1]){
-        QTEChange();
-    }
-
+    buttonClick(0);
 }
 
-
-void MainWindow::on_button3_toggled(bool checked)
+void MainWindow::on_button2_pressed()
 {
-    if(checked&&gpio_state[2]){
-        QTEChange();
-    }
-
+    buttonClick(1);
 }
 
-
-void MainWindow::on_button4_toggled(bool checked)
+void MainWindow::on_button3_pressed()
 {
-    if(checked&&gpio_state[3]){
-        QTEChange();
-    }
+    buttonClick(2);
+}
 
+void MainWindow::on_button4_pressed()
+{
+    buttonClick(3);
 }
 
