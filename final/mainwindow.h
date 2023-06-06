@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,8 +18,15 @@ public:
 
 private slots:
     void on_button1_toggled(bool checked);
+    void QTEChange();
+    void on_button2_toggled(bool checked);
+
+    void on_button3_toggled(bool checked);
+
+    void on_button4_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
+    QTimer *timer = new QTimer();
 };
 #endif // MAINWINDOW_H
