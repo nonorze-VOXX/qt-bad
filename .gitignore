@@ -1,3 +1,5 @@
 node_modules
 gpio*/
 build*/
+final/config.py
+final/__pycache__
