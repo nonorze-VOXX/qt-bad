@@ -1,6 +1,8 @@
 import time
 
 import Jetson.GPIO as GPIO
+from multiprocessing import Process, Value
+from ctypes import c_char_p
 
 # change these as desired - they're the pins connected from the
 # SPI port on the ADC to the Cobbler
@@ -75,20 +77,51 @@ output_pin = 7
 
 photo_ch = 0
 
+def decode(result):
+    MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
+	'C':'-.-.', 'D':'-..', 'E':'.',
+	'F':'..-.', 'G':'--.', 'H':'....',
+	'I':'..', 'J':'.---', 'K':'-.-',
+	'L':'.-..', 'M':'--', 'N':'-.',
+	'O':'---', 'P':'.--.', 'Q':'--.-',
+	'R':'.-.', 'S':'...', 'T':'-',
+	'U':'..-', 'V':'...-', 'W':'.--',
+	'X':'-..-', 'Y':'-.--', 'Z':'--..',
+	'1':'.----', '2':'..---', '3':'...--',
+	'4':'....-', '5':'.....', '6':'-....',
+	'7':'--...', '8':'---..', '9':'----.',
+	'0':'-----', ', ':'--..--', '.':'.-.-.-',
+	'?':'..--..', '/':'-..-.', '-':'-....-',
+	'(':'-.--.', ')':'-.--.-'}
+    
+    text = ""
+    for k, v in MORSE_CODE_DICT.items():
+        if result == v:
+                text = k
+    return text
+    
+def test():
+    code = "... --- ..."
+    result = decode(code)
+    print(result)
+
+
 def main():
-    thresh = 300
+    thresh = 400
     is_light = False 
     pre_light = False
     counter = 0
     now_time = 0
-    start_flag = False
-    long_signal_thresh = 2
     result = ""
+    text = ""
+    start_flag = False
+    long_signal_thresh = 0.4
     init()
+
+    print("start")
     base_time = time.time()
     while True:
         adc_value = readadc(photo_ch, SPICLK, SPIMOSI, SPIMISO, SPICS)
-        adc_value = int(input())
         print(adc_value)
         if (adc_value > thresh):
             is_light = True
@@ -97,19 +130,26 @@ def main():
 
         if pre_light != is_light:  # light switch            
             now_time = time.time()
-            if now_time - base_time > long_signal_thresh:
+            bias = now_time - base_time
+            # print("bias " , bias)
+            if bias > long_signal_thresh:
                 if is_light == False:
-                    result += " "
+                    text += decode(result)
+                    result = ""
                 elif is_light == True:
                     result += "-"
-            elif counter > 0:
+            elif bias > 0:
                 if is_light == True:
                     result += "."
 
             pre_light = is_light
             base_time = time.time()
+        #result = decode(result)
         print(result)
-        time.sleep(0.2)
+        print(text)
+        with open('text.txt', 'w') as f:
+            f.write(text)
+        time.sleep(0.05)
 
 
 if __name__ == '__main__':

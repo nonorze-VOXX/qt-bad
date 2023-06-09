@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include "unistd.h"
 #include <semaphore.h>
+#include <cmath>
 
 //char  GPIOPath[] = "/sys/class/gpio/\0";
 int map[4] = { 429, 398, 396 ,466};
@@ -44,6 +45,15 @@ int gpio_set_value(unsigned int gpio, int value) {
     close(fd);
     return 0;
 }
+void outputScore(int score){
+    int fd = open("/home/green-rider/code/university/qt-bad/final/score", O_WRONLY);
+    if (fd < 0) {
+        perror("score file not found");
+    }
+
+    write(fd, std::to_string(score).c_str(),(int)log10(score)+1) ;
+    close(fd);
+}
 void MainWindow::QTEChange(){
     int qteIndex = (int)random()% 4;
     if(gpio_state[qteIndex]==1){
@@ -67,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(QTEChange()));
     for (int var = 0; var < 4; ++var) {
-        gpio_set_value(map[var],1);
+        gpio_set_value(map[var],0);
     }
     ui->label->setText(QString("score"));
 
@@ -86,6 +96,7 @@ void MainWindow::buttonClick(int b){
     }else{
         score=0;
     }
+    outputScore(score);
     QString s = QStringLiteral("%1. ").arg(score);
     ui->label->setText(s);
 }

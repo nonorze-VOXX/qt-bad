@@ -1,0 +1,46 @@
+<html>
+<header>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
+        integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        $(document).ready(function () {
+            var socket = io.connect({ secure: false });
+            setInterval(() => { socket.emit('status', "fuck") }, 1000)
+            //send text to sever
+            $('#send').click(() => { socket.emit('send', 'text ' + document.querySelector("#input").value) })
+            socket.on('update', function (msg) {
+                document.querySelector("#led1").innerHTML = msg.led1
+                document.querySelector("#sen").innerHTML = msg.sen
+                document.querySelector("#mores").innerHTML = msg.mores
+            });
+
+        });
+    </script>
+
+</header>
+
+<!-- 在body中加入status的div tag-->
+
+<body>
+    <div id="status">
+        <h2>led!</h2>
+        <p id="led1"></p>
+        <h2>light sen!</h2>
+        <p id="sen"></p>
+        <h2>mores code!</h2>
+        <p id="mores"></p>
+
+    </div>
+    <div>
+        <input id="input" type="text">
+        <button id="send">send </button>
+
+    </div>
+</body>
+
+</html>
