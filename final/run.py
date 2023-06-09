@@ -1,4 +1,5 @@
 import time
+import sys
 
 def text_to_morse(text):
     MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
@@ -36,14 +37,14 @@ def pass_morse(morse):
     led_code = "466"
     status = "0"
     path = "/dev/lab6-2"
-    path = "tmp.txt"
+    # path = "tmp.txt"
     print(morse)
     
     for m in morse:
         if m == '.':
             with open(path, 'w') as f:
                 f.write(led_code + " " + "1")
-            time.sleep(0.5)
+            time.sleep(0.3)
             with open(path, 'w') as f:
                 f.write(led_code + " " + "0")
         if m == '-':
@@ -56,5 +57,7 @@ def pass_morse(morse):
             time.sleep(1)
         time.sleep(0.3)
         
-morse = text_to_morse("HEY/you")
-pass_morse(morse)
+if __name__=="__main__":
+    arg=sys.argv[1:]
+    morse = text_to_morse(arg[0])
+    pass_morse(morse)

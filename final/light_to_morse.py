@@ -115,7 +115,7 @@ def main():
     result = ""
     text = ""
     start_flag = False
-    long_signal_thresh = 0.4
+    long_signal_thresh = 0.7
     init()
 
     print("start")
@@ -128,13 +128,22 @@ def main():
         else:
             is_light = False
 
+        now_time = time.time()
+        if(now_time-base_time>60):
+            text=""
+            result = ""
+        elif(now_time-base_time>5):
+            text += decode(result)
+            result = ""
+
         if pre_light != is_light:  # light switch            
-            now_time = time.time()
+            # now_time = time.time()
             bias = now_time - base_time
             # print("bias " , bias)
             if bias > long_signal_thresh:
                 if is_light == False:
                     text += decode(result)
+                    print(text)
                     result = ""
                 elif is_light == True:
                     result += "-"
@@ -149,7 +158,7 @@ def main():
         print(text)
         with open('text.txt', 'w') as f:
             f.write(text)
-        time.sleep(0.05)
+        time.sleep(0.03)
 
 
 if __name__ == '__main__':

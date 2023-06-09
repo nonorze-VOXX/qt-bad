@@ -1,0 +1,1 @@
+cmd_/home/nvidia/code/backup/final/lab6-2.ko := ld -EL -r  -T ./scripts/module-common.lds -T ./arch/arm64/kernel/module.lds --build-id  -o /home/nvidia/code/backup/final/lab6-2.ko /home/nvidia/code/backup/final/lab6-2.o /home/nvidia/code/backup/final/lab6-2.mod.o ;  true

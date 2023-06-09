@@ -10,9 +10,9 @@
 
         $(document).ready(function () {
             var socket = io.connect({ secure: false });
-            setInterval(() => { socket.emit('status', "fuck") }, 1000)
+            setInterval(() => { socket.emit('status', "fuck") }, 300)
             //send text to sever
-            $('#send').click(() => { socket.emit('send', 'text ' + document.querySelector("#input").value) })
+            $('#send').click(() => { socket.emit('send', document.querySelector("#input").value) })
             socket.on('update', function (msg) {
                 document.querySelector("#led1").innerHTML = msg.led1
                 document.querySelector("#sen").innerHTML = msg.sen

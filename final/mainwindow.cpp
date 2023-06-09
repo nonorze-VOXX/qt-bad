@@ -14,10 +14,14 @@
 #include <semaphore.h>
 #include <cmath>
 
-//char  GPIOPath[] = "/sys/class/gpio/\0";
-int map[4] = { 429, 398, 396 ,466};
+char  GPIOPath[] = "/sys/class/gpio/\0";
+int map[4] = { 255, 398, 392 ,481};
+//255 - > 15
+//398 - > 29
+//392 - > 12
+//481 - > 18
 int gpio_state[4] = {0,0,0,0};
-char  GPIOPath[] = "/home/green-rider/code/university/qt-bad/final/\0";
+//char  GPIOPath[] = "/home/green-ridkr/code/university/qt-bad/final/\0";
 int score = 0;
 int gpio_set_value(unsigned int gpio, int value) {
     int fd;
@@ -31,6 +35,7 @@ int gpio_set_value(unsigned int gpio, int value) {
 
     strcpy(buf, setDirExportPath);
 
+    printf("%d: %d :%s\n",gpio,value,buf);
     fd = open(buf, O_WRONLY);
     if (fd < 0) {
         perror("gpio/set-value");
@@ -46,7 +51,7 @@ int gpio_set_value(unsigned int gpio, int value) {
     return 0;
 }
 void outputScore(int score){
-    int fd = open("/home/green-rider/code/university/qt-bad/final/score", O_WRONLY);
+    int fd = open("./score", O_WRONLY);
     if (fd < 0) {
         perror("score file not found");
     }
