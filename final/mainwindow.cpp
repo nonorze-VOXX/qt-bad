@@ -96,7 +96,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::buttonClick(int b){
     if(gpio_state[b]){
-        //QTEChange();
+        QTEChange();
         score+=1;
     }else{
         score=0;
