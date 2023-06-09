@@ -78,27 +78,38 @@ photo_ch = 0
 def main():
     thresh = 300
     is_light = False 
+    pre_light = False
     counter = 0
-    long_signal_thresh = 5
+    now_time = 0
+    start_flag = False
+    long_signal_thresh = 2
     result = ""
     init()
+    base_time = time.time()
     while True:
         adc_value = readadc(photo_ch, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        adc_value = int(input())
         print(adc_value)
         if (adc_value > thresh):
             is_light = True
         else:
             is_light = False
 
-        if (is_light == True):
-            counter += 1
-        else:
-            if counter > long_signal_thresh:
-                result += "1"
+        if pre_light != is_light:  # light switch            
+            now_time = time.time()
+            if now_time - base_time > long_signal_thresh:
+                if is_light == False:
+                    result += " "
+                elif is_light == True:
+                    result += "-"
             elif counter > 0:
-                result += "0"
-            counter = 0
-        time.sleep(0.5)
+                if is_light == True:
+                    result += "."
+
+            pre_light = is_light
+            base_time = time.time()
+        print(result)
+        time.sleep(0.2)
 
 
 if __name__ == '__main__':
