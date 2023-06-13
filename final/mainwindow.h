@@ -26,6 +26,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QTimer *timer = new QTimer();
-
+    bool flag;
+    void scoreChange(int s);
 };
 #endif // MAINWINDOW_H

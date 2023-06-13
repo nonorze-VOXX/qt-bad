@@ -60,6 +60,11 @@ void outputScore(int score){
     close(fd);
 }
 void MainWindow::QTEChange(){
+    if(flag){
+        flag = false;
+    }else{
+        scoreChange(0);
+    }
     int qteIndex = (int)random()% 4;
     if(gpio_state[qteIndex]==1){
         qteIndex+=1;
@@ -69,6 +74,7 @@ void MainWindow::QTEChange(){
         if(i==qteIndex){
             gpio_state[i]=1;
             gpio_set_value(map[i], 1);
+            ui->pixmap->setGeometry(QRect(40 + 166 * i,300,300,300));
         }else{
             gpio_state[i]=0;
             gpio_set_value(map[i], 0);
@@ -86,7 +92,13 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ui->label->setText(QString("score"));
 
-    timer->start(5000);
+    //timer->setSingleShot(true);
+    timer->start(3000);
+    flag = false;
+
+    QPixmap pixmap = QPixmap("../final/bulb.jpg");
+    ui->pixmap->setPixmap(pixmap);
+    ui->pixmap->setGeometry(QRect(40,300,0,0));  // make it disapear
 }
 
 MainWindow::~MainWindow()
@@ -95,15 +107,20 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::buttonClick(int b){
+    flag = true;
     if(gpio_state[b]){
-        //QTEChange();
-        score+=1;
+        timer->start(3000);
+        QTEChange();
+        scoreChange(score+1);
     }else{
-        score=0;
+        scoreChange(0);
     }
+}
+void MainWindow::scoreChange(int s){
+    score = s;
     outputScore(score);
-    QString s = QStringLiteral("%1. ").arg(score);
-    ui->label->setText(s);
+    QString o = QStringLiteral("%1. ").arg(score);
+    ui->label->setText(o);
 }
 
 void MainWindow::on_button1_pressed()
