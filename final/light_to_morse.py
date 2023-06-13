@@ -158,6 +158,8 @@ def main():
         print(text)
         with open('text.txt', 'w') as f:
             f.write(text)
+        with open('morse-code.txt', 'w') as f:
+            f.write(result)
         time.sleep(0.03)
 
 
