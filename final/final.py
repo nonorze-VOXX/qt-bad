@@ -3,9 +3,9 @@ from flask import Flask, request, abort, render_template, jsonify
 from flask_socketio import SocketIO, emit
 import subprocess
 import pexpect
-
 import os
 import logging
+
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -63,7 +63,7 @@ def getdata(msg):
 if __name__ == '__main__':
     # light=pexpect.spawnu(f"sudo python3 run.py 1",timeout=3000)
     light=pexpect.spawnu("sudo python3 light_to_morse.py")
-    light.expect('sudo] password for nvidia:')
+    light.expect('[sudo] password for nvidia:')
     light.sendline('nvidia')
     app.run(host='0.0.0.0',port=8000,debug=False)
 

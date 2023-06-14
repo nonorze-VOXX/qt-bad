@@ -142,7 +142,7 @@ def main():
                     mailtext="score: "+score
                     print(score)
                     send_email.sendMail(text+'\n'+mailtext)
-                    exit(1)
+                    # exit(1)
 
         if pre_light != is_light:  # light switch            
             # now_time = time.time()
