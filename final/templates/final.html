@@ -7,17 +7,41 @@
         integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" charset="utf-8">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         $(document).ready(function () {
+			let data=[12, 19, 3, 5, 2, 3]
+			let char;
             var socket = io.connect({ secure: false });
             setInterval(() => { socket.emit('status', "fuck") }, 300)
             //send text to sever
             $('#send').click(() => { socket.emit('send', document.querySelector("#input").value) })
             socket.on('update', function (msg) {
-                document.querySelector("#led1").innerHTML = msg.led1
-                document.querySelector("#sen").innerHTML = msg.sen
+                //document.querySelector("#led1").innerHTML = msg.led1
+                //document.querySelector("#sen").innerHTML = msg.sen
                 document.querySelector("#mores").innerHTML = msg.mores
+                document.querySelector("#text").innerHTML = msg.text
             });
+
+			const ctx = document.getElementById('myChart');
+			chart=new Chart(ctx, {
+			type: 'bar',
+			data: {
+			  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+			  datasets: [{
+				label: '# of Votes',
+				data:data ,
+				borderWidth: 1
+			  }]
+			},
+			options: {
+				scales: {
+				y: {
+				  beginAtZero: true
+				}
+			  }
+			}
+		  });
 
         });
     </script>
@@ -28,12 +52,12 @@
 
 <body>
     <div id="status">
-        <h2>led!</h2>
-        <p id="led1"></p>
-        <h2>light sen!</h2>
-        <p id="sen"></p>
+
         <h2>mores code!</h2>
         <p id="mores"></p>
+
+        <h2>decode text!</h2>
+        <p id="text"></p>
 
     </div>
     <div>
@@ -41,6 +65,7 @@
         <button id="send">send </button>
 
     </div>
+	<div id="myChart"></div>
 </body>
 
 </html>

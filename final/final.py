@@ -34,12 +34,15 @@ def upload(msg):
 
 
     # socketio.emit('status_response', {'data': "hi "})
+    text=""
     mores=""
     with open("text.txt","r") as f:
+        text= f.read()
+    with open("morse-code.txt","r") as f:
         mores= f.read()
 
-    print("mores!",mores)
-    socketio.emit('update', {'led1': "0","sen":"500","mores":mores})
+    print("mores!",text)
+    socketio.emit('update', {'led1': "0","sen":"500","mores":mores,"text":text})
     return jsonify(
         {"response": "ok"}
     )
