@@ -165,9 +165,9 @@ def main():
         print(result)
         print(text)
         with open('text.txt', 'w') as f:
-            f.write(text)
-        with open('morse-code.txt', 'w') as f:
-            f.write(result)
+            f.writelines(text)
+            f.writelines(result)
+            f.writelines(str(adc_value))
         time.sleep(0.03)
 
 

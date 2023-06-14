@@ -1,72 +1,123 @@
 <html>
 <header>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
-        integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript" charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
+    integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" charset="utf-8">
 
-        $(document).ready(function () {
-			let data=[12, 19, 3, 5, 2, 3]
-			let char;
-            var socket = io.connect({ secure: false });
-            setInterval(() => { socket.emit('status', "fuck") }, 300)
-            //send text to sever
-            $('#send').click(() => { socket.emit('send', document.querySelector("#input").value) })
-            socket.on('update', function (msg) {
-                //document.querySelector("#led1").innerHTML = msg.led1
-                //document.querySelector("#sen").innerHTML = msg.sen
-                document.querySelector("#mores").innerHTML = msg.mores
-                document.querySelector("#text").innerHTML = msg.text
-            });
+    function getime() {
+      let currentTime = new Date();
 
-			const ctx = document.getElementById('myChart');
-			chart=new Chart(ctx, {
-			type: 'bar',
-			data: {
-			  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-			  datasets: [{
-				label: '# of Votes',
-				data:data ,
-				borderWidth: 1
-			  }]
-			},
-			options: {
-				scales: {
-				y: {
-				  beginAtZero: true
-				}
-			  }
-			}
-		  });
+      let hour = currentTime.getHours();
+      let minutes = currentTime.getMinutes();
+      let seconds = currentTime.getSeconds();
 
-        });
-    </script>
+      return hour.toString() + ":" + minutes.toString() + ":" + seconds.toString();
+
+    }
+    $(document).ready(function () {
+      let data = [[0, 0], [0, 0], [getime(), getime()]]
+      let count = 0
+      let socket = io.connect({ secure: false });
+      setInterval(() => { socket.emit('status', "fuck") }, 300)
+      //send text to sever
+      $('#send').click(() => { socket.emit('send', document.querySelector("#input").value) })
+      socket.on('update', function (msg) {
+        document.querySelector("#led1").innerHTML = msg.led1
+        document.querySelector("#sen").innerHTML = msg.sen
+        document.querySelector("#mores").innerHTML = msg.mores
+        document.querySelector("#text").innerHTML = msg.text
+        data[0].push(parseInt(msg.led1) == NaN ? 0 : parseInt(msg.led1))
+        data[1].push(parseInt(msg.sen) == NaN ? 0 : parseInt(msg.sen))
+        data[2].push(getime())
+
+        count += 1
+        if ((data[0]).length > 50) {
+          data[0].shift()
+          data[1].shift()
+          data[2].shift()
+          chart.data.datasets[0].data = data[0]
+          chart.data.datasets[1].data = data[1]
+          chart.label = data[3]
+          console.log(chart)
+
+        }
+        if (count > 5) {
+          console.log(data)
+          count = 0
+          chart.update()
+        }
+      });
+
+      const ctx = document.getElementById('myChart');
+      var dataFirst = {
+        label: "light",
+        data: data[0],
+        yAxisID: 'y',
+      };
+
+      var dataSecond = {
+        label: "sen",
+        data: data[1],
+        yAxisID: 'y1',
+      };
+
+      var speedData = {
+        // labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
+        labels: data[2],
+        datasets: [dataFirst, dataSecond]
+      };
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: speedData
+        ,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            },
+            y1: {
+              beginAtZero: true
+            }
+
+          }
+        }
+      });
+
+    });
+  </script>
 
 </header>
 
 <!-- 在body中加入status的div tag-->
 
 <body>
-    <div id="status">
+  <div id="status">
 
-        <h2>mores code!</h2>
-        <p id="mores"></p>
+    <h2>LED!</h2>
+    <p id="led1"></p>
 
-        <h2>decode text!</h2>
-        <p id="text"></p>
+    <h2>light sen!</h2>
+    <p id="sen"></p>
 
-    </div>
-    <div>
-        <h2>sent text!</h2>
-        <input id="input" type="text">
-        <button id="send">send </button>
+    <h2>mores code!</h2>
+    <p id="mores"></p>
 
-    </div>
-	<div id="myChart"></div>
+    <h2>decode text!</h2>
+    <p id="text"></p>
+
+  </div>
+  <div>
+    <h2>sent text!</h2>
+    <input id="input" type="text">
+    <button id="send">send </button>
+
+  </div>
+  <canvas id="myChart" height="80%">
 </body>
 
 </html>
