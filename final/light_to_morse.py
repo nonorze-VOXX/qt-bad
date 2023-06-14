@@ -138,11 +138,11 @@ def main():
             result = ""
             with open("./score") as file:
                 score=file.read()
-                if(int(score)>30):
+                if(int(score)>5):
                     mailtext="score: "+score
                     print(score)
                     send_email.sendMail(text+'\n'+mailtext)
-                    # exit(1)
+                    exit(1)
 
         if pre_light != is_light:  # light switch            
             # now_time = time.time()
