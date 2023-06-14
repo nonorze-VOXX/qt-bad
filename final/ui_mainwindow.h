@@ -32,6 +32,7 @@ public:
     QPushButton *button3;
     QPushButton *button4;
     QLabel *label;
+    QLabel *pixmap;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -47,20 +48,24 @@ public:
         button1->setGeometry(QRect(70, 250, 80, 25));
         button2 = new QPushButton(centralwidget);
         button2->setObjectName(QStringLiteral("button2"));
-        button2->setGeometry(QRect(210, 250, 80, 25));
+        button2->setGeometry(QRect(250, 250, 80, 25));
         button3 = new QPushButton(centralwidget);
         button3->setObjectName(QStringLiteral("button3"));
-        button3->setGeometry(QRect(340, 250, 80, 25));
+        button3->setGeometry(QRect(420, 250, 80, 25));
         button4 = new QPushButton(centralwidget);
         button4->setObjectName(QStringLiteral("button4"));
-        button4->setGeometry(QRect(460, 250, 80, 25));
+        button4->setGeometry(QRect(580, 250, 80, 25));
         label = new QLabel(centralwidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(280, 110, 66, 18));
+        pixmap = new QLabel(centralwidget);
+        pixmap->setObjectName(QStringLiteral("pixmap"));
+        pixmap->setGeometry(QRect(30, 290, 171, 231));
+        pixmap->setPixmap(QPixmap(QString::fromUtf8("bulb.jpg")));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 23));
+        menubar->setGeometry(QRect(0, 0, 800, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));

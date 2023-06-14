@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QPixmap pixmap = QPixmap("../final/bulb.jpg");
     ui->pixmap->setPixmap(pixmap);
-    ui->pixmap->setGeometry(QRect(40,300,0,0));  // make it disapear
+    ui->pixmap->setGeometry(QRect(40,300,100,100));  // make it disapear
 }
 
 MainWindow::~MainWindow()

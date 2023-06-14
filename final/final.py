@@ -58,15 +58,15 @@ def getdata(msg):
         global child
         if(child!=""):
             child.close()
-        child=pexpect.spawnu(f"sudo python3 run.py {msg}",timeout=3000)
-        child.expect('sudo] password for nvidia:')
+        child=pexpect.spawnu(f"sudo python3 run.py /{msg}",timeout=30000)
+        #child.expect('sudo] password for nvidia:')
         child.sendline('nvidia')
         # child.expect('password:')
         # child.sendline('nvidia')
 if __name__ == '__main__':
     # light=pexpect.spawnu(f"sudo python3 run.py 1",timeout=3000)
-    light=pexpect.spawnu("sudo python3 light_to_morse.py")
-    light.expect('[sudo] password for nvidia:')
+    light=pexpect.spawnu("sudo python3 light_to_morse.py",timeout=30000)
+    #light.expect('[sudo] password for nvidia:')
     light.sendline('nvidia')
     app.run(host='0.0.0.0',port=8000,debug=False)
 
