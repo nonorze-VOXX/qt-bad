@@ -118,6 +118,8 @@ def main():
     start_flag = False
     long_signal_thresh = 0.7
     init()
+    # with open("./score","w") as file:
+        # file.writelines("0")
 
     print("start")
     base_time = time.time()
@@ -136,13 +138,16 @@ def main():
         elif(now_time-base_time>5):
             text += decode(result)
             result = ""
-            with open("./score") as file:
+            score="0"
+            with open("./score","r") as file:
                 score=file.read()
-                if(int(score)>5):
-                    mailtext="score: "+score
-                    print(score)
-                    send_email.sendMail(text+'\n'+mailtext)
-                    exit(1)
+            if(int(score)>5):
+                mailtext="score: "+score
+                send_email.sendMail(text+'\n'+mailtext)
+                with open("./score","w") as file:
+                    score=file.writelines("0")
+                    # exit(1)
+            
 
         if pre_light != is_light:  # light switch            
             # now_time = time.time()
@@ -165,10 +170,10 @@ def main():
         print(result)
         print(text)
         with open('text.txt', 'w') as f:
-            f.writelines(text)
-            f.writelines(result)
+            f.writelines(text+"\n")
+            f.writelines(result+"\n")
             f.writelines(str(adc_value))
-        time.sleep(0.03)
+        time.sleep(0.04)
 
 
 if __name__ == '__main__':

@@ -32,9 +32,13 @@
         document.querySelector("#mores").innerHTML = msg.mores
         document.querySelector("#text").innerHTML = msg.text
         data[0].push(parseInt(msg.led1) == NaN ? 0 : parseInt(msg.led1))
-        data[1].push(parseInt(msg.sen) == NaN ? 0 : parseInt(msg.sen))
+        let tem = Number(msg.sen)
+        console.log(tem)
+        console.log(msg.sen)
+        data[1].push(tem == NaN ? 0 : tem)
         data[2].push(getime())
 
+        // console.log(data[1])
         count += 1
         if ((data[0]).length > 50) {
           data[0].shift()
@@ -43,11 +47,11 @@
           chart.data.datasets[0].data = data[0]
           chart.data.datasets[1].data = data[1]
           chart.label = data[3]
-          console.log(chart)
+          // console.log(chart)
 
         }
         if (count > 5) {
-          console.log(data)
+          // console.log(data)
           count = 0
           chart.update()
         }

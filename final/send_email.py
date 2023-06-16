@@ -31,5 +31,3 @@ def sendMail(text):
             print("Complete!")
         except Exception as e:
             print("Error message: ", e)
-
-sendMail('meme')

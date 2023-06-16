@@ -46,7 +46,9 @@ def upload(msg):
         led1=f.read()
 
 
-    print("mores!",text)
+    print("text!",text)
+    print("mores!",mores)
+    print("value!",value)
     socketio.emit('update', {'led1': led1,"sen":value,"mores":mores,"text":text})
     return jsonify(
         {"response": "ok"}
@@ -70,9 +72,9 @@ def getdata(msg):
         # child.sendline('nvidia')
 if __name__ == '__main__':
     # light=pexpect.spawnu(f"sudo python3 run.py 1",timeout=3000)
-    light=pexpect.spawnu("sudo python3 light_to_morse.py",timeout=30000)
-    #light.expect('[sudo] password for nvidia:')
-    light.sendline('nvidia')
+    # light=pexpect.spawnu("sudo python3 light_to_morse.py",timeout=30000)
+    # light.expect('[sudo] password for nvidia:')
+    # light.sendline('nvidia')
     app.run(host='0.0.0.0',port=8000,debug=False)
 
 

@@ -23,6 +23,44 @@ int map[4] = { 255, 398, 392 ,481};
 int gpio_state[4] = {0,0,0,0};
 //char  GPIOPath[] = "/home/green-ridkr/code/university/qt-bad/final/\0";
 int score = 0;
+
+int gpio_export(unsigned int gpio) {
+  int fd, len;
+  char buf[64];
+
+  fd = open("/sys/class/gpio/export", O_WRONLY);
+  if (fd < 0) {
+    perror("gpio/export");
+    return fd;
+  }
+  len = snprintf(buf, sizeof(buf), "%d", gpio);
+  write(fd, buf, len);
+  close(fd);
+
+  return 0;
+}
+
+int gpio_set_dir(unsigned int gpio, std::string dirStatus) {
+  int fd;
+  char buf[64];
+  printf("%d\n", gpio);
+
+  snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%d/direction", gpio);
+
+  fd = open(buf, O_WRONLY);
+  if (fd < 0) {
+    perror("gpio/direction");
+    return fd;
+  }
+  if (dirStatus == "out") {
+    write(fd, "out", 4);
+  } else {
+    write(fd, "in", 3);
+  }
+  close(fd);
+  return 0;
+}
+
 int gpio_set_value(unsigned int gpio, int value) {
     int fd;
     char buf[64];
@@ -58,6 +96,9 @@ void outputScore(int score){
 
     write(fd, std::to_string(score).c_str(),(int)log10(score)+1) ;
     close(fd);
+    if (score > 5) {
+        exit(1);
+    }
 }
 void MainWindow::QTEChange(){
     if(flag){
@@ -95,6 +136,11 @@ MainWindow::MainWindow(QWidget *parent)
     //timer->setSingleShot(true);
     timer->start(3000);
     flag = false;
+
+    for (int i=0; i<4; i++) {
+        gpio_export(map[i]);
+        gpio_set_dir(map[i], "out");
+    }
 
     QPixmap pixmap = QPixmap("../final/bulb.jpg");
     ui->pixmap->setPixmap(pixmap);
